@@ -6,15 +6,12 @@ import ee.ken.webShop.model.SignupResponse;
 import ee.ken.webShop.repository.PersonRepository;
 import ee.ken.webShop.sevice.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 
 public class PersonController {
     @Autowired
@@ -37,10 +34,21 @@ public class PersonController {
 
     @PostMapping("login")
     public LoginResponse login(@RequestBody Person person) {
-        personService.checkForErrors(person);
+        Long id = personService.checkForErrorsAndGetId(person);
+
         LoginResponse response = new LoginResponse();
         response.setExpiration(new Date());
-        response.setToken("Base-64-kujul-tähed-ja-numbrid");
+        response.setToken(id.toString()); //TODO : Hiljem tagastada õige token mille sees on ID peidetud
         return response;
+    }
+
+    @GetMapping("person")
+    public Person getPerson(@RequestParam Long id) {
+        return personRepository.findById(id).orElseThrow();
+    }
+
+    @PutMapping ("person")
+    public Person editPerson(@RequestBody Person person) {
+        return personRepository.save(person);
     }
 }

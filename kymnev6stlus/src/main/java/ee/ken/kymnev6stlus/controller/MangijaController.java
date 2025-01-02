@@ -29,3 +29,6 @@ public class MangijaController {
         return mangijaRepository.findAll();
     }
 }
+//Film rentali front-end teha!
+//Siin lehekülgi sportlasega läbi mängida!
+//Lõpuprojektiks eelmine lõpuprojekt korda ja backend sellele!!!

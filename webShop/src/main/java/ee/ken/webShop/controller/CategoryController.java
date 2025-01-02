@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000") -> Kuna sai config faili siis kontrollerites ei ole vaja seda enam kasutada!!
 
 public class CategoryController {
 

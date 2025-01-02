@@ -46,7 +46,7 @@ public class PersonService {
         return null;
     }
 
-    public void checkForErrors(Person person) {
+    public Long checkForErrorsAndGetId(Person person) {
         if (person.username == null) {
             throw new RuntimeException("Sisestage kasutajanimi!");
         }
@@ -60,7 +60,9 @@ public class PersonService {
         if (!dbPerson.password.equals(person.password)) {
             throw new RuntimeException("Parool on vale");
         }
+        return dbPerson.id;
     }
+
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 

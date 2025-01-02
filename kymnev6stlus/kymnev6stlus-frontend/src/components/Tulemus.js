@@ -4,6 +4,8 @@ function Tulemus() {
     const [tulemused, setTulemused] = useState([])
     const [sportlased, setSportlased] = useState([])
     const [punktidKokku, setPunktidKokku] = useState()
+    const [activePage, setActivePage] = useState(1)
+    const [pages, setPages] = useState([])
 
     const nameRef = useRef()
     const sooritusRef = useRef()
@@ -11,15 +13,22 @@ function Tulemus() {
     const sportlaseIdRef = useRef()
      
     useEffect(() => {
-        fetch("http://localhost:8080/Tulemused")
+        fetch("http://localhost:8080/Tulemused?size=2&page=" + (activePage - 1))
         .then(res => res.json())
-        .then(json => setTulemused(json))
-    }, []);
+        .then(json => {
+            setTulemused(json.content)
+        let items = []
+        for (let page = 1; page <= json.totalPages; page++) {
+            items.push(page)
+        }
+        setPages(items)
+        })
+    }, [activePage]);
 
     useEffect(() => {
         fetch("http://localhost:8080/Sportlased")
         .then(res => res.json())
-        .then(json => setSportlased(json))
+        .then(json => setSportlased(json.content))
     }, []);
 
     function lisa() {
@@ -35,7 +44,7 @@ function Tulemus() {
             headers: {"Content-Type" : "application/json"}
         })
         .then(res => res.json())
-        .then(json => setTulemused(json))
+        .then(json => setTulemused(json.content))
     }
 
     function kustuta(tulemusId) {
@@ -44,7 +53,7 @@ function Tulemus() {
             method : "DELETE"
         })
         .then(res => res.json())
-        .then(json => setTulemused(json))
+        .then(json => setTulemused(json.content))
     }
 
     function punktideKogusumma(sportlaneId){
@@ -82,6 +91,8 @@ function Tulemus() {
                 <button onClick={() =>kustuta(tulemus.id)}>Kustuta</button></div><br/>
                 </div>
         )}
+        {pages.map(page => <button key={page} onClick={() => 
+            setActivePage(page)}>{page}</button>)}
     </div>
   )
 }

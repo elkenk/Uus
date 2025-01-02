@@ -3,6 +3,8 @@ package ee.ken.kymnev6stlus.controller;
 import ee.ken.kymnev6stlus.entity.Tulemus;
 import ee.ken.kymnev6stlus.repository.TulemusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,24 +18,24 @@ public class TulemusController {
     TulemusRepository tulemusRepository;
 
     @GetMapping("Tulemused")
-    public List<Tulemus> saaTulemus() {
-        return tulemusRepository.findAll();
+    public Page<Tulemus> saaTulemus(Pageable pageable) {
+        return tulemusRepository.findAll(pageable);
     }
 
     @PostMapping("Tulemused")
-    public List<Tulemus> lisaTulemus(@RequestBody Tulemus tulemus){
+    public Page<Tulemus> lisaTulemus(@RequestBody Tulemus tulemus, Pageable pageable){
         int punktid = (int) (tulemus.getSooritus() * 100); // Punktide osas peaks olema sügavam arvutustehe
         tulemus.setPunktid(punktid);
         tulemusRepository.save(tulemus);
-        return tulemusRepository.findAll();
+        return tulemusRepository.findAll(pageable);
     }
 
     @DeleteMapping("Tulemused/{id}")
-    public List<Tulemus> kustutaTulemus(@PathVariable Long id){
+    public Page<Tulemus> kustutaTulemus(@PathVariable Long id, Pageable pageable){
         tulemusRepository.deleteById(id);
-        return tulemusRepository.findAll();
+        return tulemusRepository.findAll(pageable);
     }
-    @GetMapping("LiidaPunktid") // On ununenud lisada!!!
+    @GetMapping("LiidaPunktid")
     public int liidaPunktid(@RequestParam Long id) {
         int summa = 0;
         List<Tulemus> tulemused = tulemusRepository.findBySportlane_Id(id);

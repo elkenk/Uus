@@ -6,14 +6,12 @@ import ee.ken.film_rental.repository.FilmRepository;
 import ee.ken.film_rental.repository.RentalRepository;
 import ee.ken.film_rental.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class RentalController {
 

@@ -3,6 +3,8 @@ package ee.ken.kymnev6stlus.controller;
 import ee.ken.kymnev6stlus.entity.Sportlane;
 import ee.ken.kymnev6stlus.repository.SportlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,19 +17,19 @@ public class SportlaneController {
     SportlaneRepository sportlaneRepository;
 
     @GetMapping("Sportlased")
-    public List<Sportlane> saaSportlased(){
-        return sportlaneRepository.findAll();
+    public Page<Sportlane> saaSportlased(Pageable pageable){
+        return sportlaneRepository.findAll(pageable);
     }
 
     @PostMapping("Sportlased")
-    public List<Sportlane> lisaSportlane(@RequestBody Sportlane sportlane){
+    public Page<Sportlane> lisaSportlane(@RequestBody Sportlane sportlane, Pageable pageable){
         sportlaneRepository.save(sportlane);
-        return sportlaneRepository.findAll();
+        return sportlaneRepository.findAll(pageable);
     }
 
     @DeleteMapping("Sportlased/{id}")
-    public List<Sportlane> kustutaSportlane(@PathVariable Long id){
+    public Page<Sportlane> kustutaSportlane(@PathVariable Long id, Pageable pageable){
         sportlaneRepository.deleteById(id);
-        return sportlaneRepository.findAll();
+        return sportlaneRepository.findAll(pageable);
     }
 }
